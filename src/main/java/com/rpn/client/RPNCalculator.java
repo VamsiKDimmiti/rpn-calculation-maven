@@ -1,9 +1,6 @@
 package com.rpn.client;
 
-import com.rpn.command.Operator;
-import com.rpn.command.impl.*;
-import com.rpn.controller.Operation;
-import com.rpn.model.RPNParam;
+import com.rpn.service.RPNService;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -25,20 +22,15 @@ public class RPNCalculator {
         log.info("RPN Calculator Main Starts");
         final Scanner scr = new Scanner(System.in);
         String input;
-        final Stack<String> resultStack = new Stack();
+        final Stack<String> resultStack = new Stack<String>();
+        RPNService rpnService = new RPNService();
         while (true) {
             //Reading the input from command line
             input = scr.nextLine();
             //to format the value to have 15 allowable decimal which includes precision of 10 decimals
             DecimalFormat decimalFormat = new DecimalFormat("#####.##########");
             List<String> inputList = Arrays.asList(input.split(" "));
-            Double res;
             String element;
-            //To convert parameters of an Operation to Object - Model
-            final RPNParam rpnOp = new RPNParam();
-            //Controller (Invoker) of the calculator operations
-            final Operation operation = new Operation();
-
             for (int id = 0; id < inputList.size(); id++) {
                 element = inputList.get(id);
                 try {
@@ -47,46 +39,7 @@ public class RPNCalculator {
                     } else if (element.equals("clear")) {
                         resultStack.clear();
                     } else {
-                        rpnOp.setOperator(element);
-                        if ("+,*,-,/".contains(element)){
-                            if(element.equals("/") && 0.0 == Double.parseDouble(resultStack.peek()))
-                                throw new Exception("Dividing by Zero is not allowed");
-                            if (resultStack.size() > 1) {
-                                rpnOp.setFirstOperand(Double.parseDouble(resultStack.pop()));
-                                rpnOp.setSecondOperand(Double.parseDouble(resultStack.pop()));
-                                Operator op;
-                                switch(element.charAt(0)){
-                                    case '+':
-                                        op = new AddOperator(rpnOp);//Command implementing Addition
-                                        break;
-                                    case '-':
-                                        op = new SubOperator(rpnOp); //Command implementing Subtraction
-                                        break;
-                                    case '*':
-                                        op = new MultiplicateOperator(rpnOp); //Command implementing Multiplication
-                                        break;
-                                    case '/':
-                                        op = new DivisionOperator(rpnOp); // Command implementing Division
-                                        break;
-                                    default:
-                                        throw new Exception("invalid char");
-                                }
-                                operation.setOperator(op);
-                                res = operation.getOperationResult();
-                            }else{
-                                throw new Exception("Invalid no of operands");
-                            }
-                        }else if(element.equals("sqrt")) {
-                            rpnOp.setFirstOperand(Double.parseDouble(resultStack.pop()));//Command implementing Square root
-                            Operator op = new SqrtOperator(rpnOp);
-                            operation.setOperator(op);
-                            res = operation.getOperationResult();
-                        }else {
-                            //pushing to stack if there is no operation to be performed
-                            res = Double.parseDouble(element);
-                        }
-                        //pushing the result to stack
-                        resultStack.push(decimalFormat.format(res));
+                    resultStack.push(decimalFormat.format(rpnService.getOperator(element,resultStack)));
                     }
                 } catch (Exception e) {
                     System.out.println("operator "+element+" (position: "+ (2 * id + 1)+"): insufficient parameters" );
