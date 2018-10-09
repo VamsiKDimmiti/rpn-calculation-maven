@@ -7,9 +7,7 @@ How to execute:
 1. Run the RPNCalculation
 2. Command Prompt will provide the Information that RPN Calculator started
 3. Give the input with real numbers and operator mentioned above with space as delimiter
-4. Result will be prompted as stack of values
-
-Examples:
+4. Result will be prompted as stack of values as explained below
 
 2 3 +
 stack:5
