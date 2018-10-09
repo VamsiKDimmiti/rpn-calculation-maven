@@ -25,7 +25,7 @@ public class RPNCalculator {
         log.info("RPN Calculator Main Starts");
         final Scanner scr = new Scanner(System.in);
         String input;
-        Stack<String> resultStack = new Stack();
+        final Stack<String> resultStack = new Stack();
         while (true) {
             //Reading the input from command line
             input = scr.nextLine();
@@ -35,9 +35,9 @@ public class RPNCalculator {
             Double res;
             String element;
             //To convert parameters of an Operation to Object - Model
-            RPNParam rpnOp = new RPNParam();
+            final RPNParam rpnOp = new RPNParam();
             //Controller (Invoker) of the calculator operations
-            Operation operation = new Operation();
+            final Operation operation = new Operation();
 
             for (int id = 0; id < inputList.size(); id++) {
                 element = inputList.get(id);
