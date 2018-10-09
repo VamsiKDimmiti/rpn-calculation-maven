@@ -10,7 +10,7 @@ How to execute:
 4. Result will be prompted as stack of values
 
 Examples:
-INFO: RPN Calculator Main Starts
+
 2 3 +
 stack:5
 undo
