@@ -49,25 +49,29 @@ public class RPNCalculator {
                     } else {
                         rpnOp.setOperator(element);
                         if ("+,*,-,/".contains(element)){
+                            if(element.equals("/") && 0.0 == Double.parseDouble(resultStack.peek()))
+                                throw new Exception("Dividing by Zero is not allowed");
                             if (resultStack.size() > 1) {
                                 rpnOp.setFirstOperand(Double.parseDouble(resultStack.pop()));
                                 rpnOp.setSecondOperand(Double.parseDouble(resultStack.pop()));
-                                if(element.equals("+")){
-                                    Operator op = new AddOperator(rpnOp);//Command implementing Addition
-                                    operation.setOperator(op);
+                                Operator op;
+                                switch(element.charAt(0)){
+                                    case '+':
+                                        op = new AddOperator(rpnOp);//Command implementing Addition
+                                        break;
+                                    case '-':
+                                        op = new SubOperator(rpnOp); //Command implementing Subtraction
+                                        break;
+                                    case '*':
+                                        op = new MultiplicateOperator(rpnOp); //Command implementing Multiplication
+                                        break;
+                                    case '/':
+                                        op = new DivisionOperator(rpnOp); // Command implementing Division
+                                        break;
+                                    default:
+                                        throw new Exception("invalid char");
                                 }
-                                if(element.equals("-")){
-                                    Operator op = new SubOperator(rpnOp); //Command implementing Subtraction
-                                    operation.setOperator(op);
-                                }
-                                if(element.equals("*")){
-                                    Operator op = new MultiplicateOperator(rpnOp); //Command implementing Multiplication
-                                    operation.setOperator(op);
-                                }
-                                if(element.equals("/")){
-                                    Operator op = new DivisionOperator(rpnOp); // Command implementing Division
-                                    operation.setOperator(op);
-                                }
+                                operation.setOperator(op);
                                 res = operation.getOperationResult();
                             }else{
                                 throw new Exception("Invalid no of operands");
