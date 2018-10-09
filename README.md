@@ -4,28 +4,7 @@ Valid Input operators are +, -, *, /, undo, sqrt, clear
 
 How to execute:
 
-1. Run the RPNCalculation
+1. Run the RPNCalculation as maven project
 2. Command Prompt will provide the Information that RPN Calculator started
 3. Give the input with real numbers and operator mentioned above with space as delimiter
-4. Result will be prompted as stack of values as explained below
-
-2 3 +
-stack:5
-undo
-stack:
-1
-stack:1
-2 *
-stack:2
-3
-stack:2 3
--
-stack:-1
-7 + 3 / 2 -
-stack:0
-clear
-stack:
-1 2 3 * 5 + * * 6 5
-operator * (position: 15): insufficient parameters
-stack:11
-
+4. Result will be prompted as stack
